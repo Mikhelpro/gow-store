@@ -1,0 +1,25 @@
+HOSTING THE SITE ON GITHUB, VERCEL AND YOUR OWN HOST
+Only index.html goes to the hosts. Never upload worker.js to them (it is pasted into Cloudflare).
+
+1) GITHUB PAGES (free)
+   github.com > New repository (name: gow-store, Public) > Add file > Upload files > drop index.html > Commit.
+   Repository Settings > Pages > Source: "Deploy from a branch" > Branch: main, folder: / (root) > Save.
+   Address (after 1-2 minutes): https://YOUR-USERNAME.github.io/gow-store/
+
+2) VERCEL (free) - connects to the same GitHub repository
+   vercel.com > Sign up with GitHub > Add New > Project > Import "gow-store".
+   Framework Preset: Other. Leave build and output settings empty. Click Deploy.
+   Address: https://gow-store.vercel.app (or similar). Every change you commit to GitHub updates it automatically.
+
+3) YOUR OWN HOST (cPanel)
+   Log in to cPanel > File Manager > public_html. Delete the default index.html / "coming soon" file.
+   Upload index.html. Open your domain. (FTP also works: upload index.html to public_html.)
+
+AFTER HOSTING: tell the Worker which addresses may send orders
+   Cloudflare > your Worker > Settings > Variables and Secrets > ORIGIN (Text), several addresses separated by commas,
+   no path and no trailing slash. Example:
+   https://YOUR-USERNAME.github.io,https://gow-store.vercel.app,https://yourdomain.com
+   (For GitHub Pages use only https://YOUR-USERNAME.github.io, without /gow-store.)
+   Then click Deploy. Prices set in the admin page show on all copies.
+
+ADMIN PAGE: any copy of the site address followed by #admin
