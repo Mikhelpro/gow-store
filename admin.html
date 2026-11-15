@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>GOW Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0b0b0e;--panel:#141418;--panel2:#1a1a20;--line:rgba(255,255,255,.09);--acc:#c6ff3d;--tx:#f4f4f1;--mu:#8e8e99;--ok:#3ddc84;--warn:#ffb020;--bad:#ff6b6b;--blue:#5aa9ff}
+*{box-sizing:border-box;margin:0}html{background:var(--bg)}
+body{background:var(--bg);color:var(--tx);font:15px/1.5 "Space Grotesk",system-ui,sans-serif}
+button,input,select,textarea{font:inherit;color:inherit}button{cursor:pointer}
+.shell{display:grid;grid-template-columns:236px 1fr;min-height:100vh}
+.side{position:sticky;top:0;height:100vh;border-right:1px solid var(--line);padding:22px 16px;display:flex;flex-direction:column;gap:4px;background:#0e0e12}
+.side .lgo{padding:2px 8px 18px}.side .lgo svg{height:46px;width:auto;display:block}.side small{display:block;color:var(--mu);font-size:12px;margin-top:6px;letter-spacing:.08em;text-transform:uppercase}
+.nv{display:flex;align-items:center;gap:12px;border:0;background:none;text-align:left;padding:11px 12px;border-radius:12px;color:var(--mu);font-weight:500}
+.nv:hover{background:var(--panel);color:var(--tx)}.nv.on{background:var(--panel2);color:var(--tx);box-shadow:inset 3px 0 0 var(--acc)}.nv svg{width:18px;height:18px;flex:none}
+.nv .ct{margin-left:auto;background:var(--warn);color:#000;border-radius:99px;font-size:12px;font-weight:700;padding:0 8px}
+.side .sp{flex:1}
+.main{padding:28px 32px 60px;min-width:0;max-width:1240px;width:100%}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:22px}
+h1{font-size:28px;letter-spacing:-.03em}h2{font-size:18px;letter-spacing:-.02em;margin-bottom:12px}
+.bt{border:1px solid var(--line);background:var(--panel);border-radius:12px;padding:9px 16px;font-weight:500;transition:.15s}.bt:hover{border-color:rgba(255,255,255,.25)}
+.bt.pri{background:var(--acc);color:#000;border-color:transparent;font-weight:700}.bt.pri:hover{box-shadow:0 8px 24px -8px rgba(198,255,61,.5)}.bt.sm{padding:5px 12px;font-size:13px;border-radius:9px}
+.bt.dg{color:var(--bad)}.bt:disabled{opacity:.4;pointer-events:none}
+.seg{display:inline-flex;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:3px;gap:2px;flex-wrap:wrap}
+.seg button{border:0;background:none;padding:7px 14px;border-radius:9px;color:var(--mu);font-weight:500}.seg button.on{background:var(--panel2);color:var(--tx)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:20px;margin-bottom:16px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin-bottom:16px}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:16px 18px}.kpi span{color:var(--mu);font-size:13px}.kpi b{display:block;font-size:26px;letter-spacing:-.03em;margin:4px 0 2px}.kpi i{font-style:normal;color:var(--mu);font-size:13px}
+.kpi.hl b{color:var(--acc)}
+.grid2{display:grid;grid-template-columns:1.5fr 1fr;gap:16px}
+.tw{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:14px}th{color:var(--mu);font-weight:500;text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:12px;border-bottom:1px solid var(--line);vertical-align:middle}tr.rw{cursor:pointer}tr.rw:hover td{background:var(--panel2)}td.r,th.r{text-align:right}
+.bd{display:inline-block;border-radius:99px;padding:2px 10px;font-size:12px;font-weight:700;color:#000}
+.tl{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;align-items:center}
+input,select,textarea{background:var(--bg);border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;width:100%}input:focus,select:focus,textarea:focus{outline:none;border-color:var(--acc)}
+.tl input[type=search]{max-width:320px}
+.row{display:grid;gap:8px;margin-bottom:8px;align-items:center}.row.pk{grid-template-columns:1fr 150px 40px}.row.rf{grid-template-columns:1.1fr .6fr 1fr 70px 40px}.row.bk{grid-template-columns:.8fr 1.2fr 1.2fr 40px}
+.x{width:40px;height:42px;border-radius:12px;border:1px solid var(--line);background:none;color:var(--mu)}.x:hover{color:var(--bad);border-color:var(--bad)}
+.lb{display:block;color:var(--mu);font-size:13px;margin:14px 0 6px}.nt{color:var(--mu);font-size:13px}
+.msg{margin-top:12px;font-size:14px;min-height:20px}.msg.ok{color:var(--ok)}.msg.err{color:var(--bad)}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:16px}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);z-index:50;display:flex;justify-content:flex-end}
+.dw{width:min(520px,100%);height:100%;background:#101014;border-left:1px solid var(--line);padding:24px;overflow:auto;animation:sl .3s cubic-bezier(.22,1,.36,1)}@keyframes sl{from{transform:translateX(30px);opacity:0}to{transform:none;opacity:1}}
+.kv{display:flex;justify-content:space-between;gap:16px;padding:10px 0;border-bottom:1px solid var(--line)}.kv span{color:var(--mu)}.kv b{text-align:right;word-break:break-word;font-weight:500}
+.shot{width:100%;max-height:420px;object-fit:contain;background:#000;border-radius:14px;margin-top:14px}
+.acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.lg{min-height:100vh;display:grid;place-items:center;padding:20px}.lg .card{width:min(400px,100%);padding:28px}.lg svg{height:56px;width:auto;margin-bottom:18px}
+.er{color:var(--bad);min-height:22px;margin:8px 0;font-size:14px}
+.chart text{fill:var(--mu);font-size:11px}
+.empty{color:var(--mu);padding:26px;text-align:center}
+@media(max-width:980px){.shell{grid-template-columns:1fr}.side{position:static;height:auto;flex-direction:row;overflow-x:auto;align-items:center;padding:12px;border-right:0;border-bottom:1px solid var(--line)}.side .lgo{padding:0 8px 0 0}.side small,.side .sp{display:none}.nv{white-space:nowrap}.main{padding:20px 16px 50px}.grid2{grid-template-columns:1fr}.pgrid{grid-template-columns:1fr}.row.rf{grid-template-columns:1fr 70px 1fr}.row.bk{grid-template-columns:1fr 1fr}}
+</style></head><body><div id="app"></div>
+<script>
+/* Your Worker address. The admin password is the ADMIN_PASSWORD you set in Cloudflare. */
+var API='https://quiet-wind-8812gow-orders.gowpremium.workers.dev';
+var LOGO='<svg  xmlns="http://www.w3.org/2000/svg" viewBox="-230.4 193.3 460.8 249.8" role="img" aria-label="GOW Premium Store"><path fill="#fff" transform="translate(-235.0 392) scale(0.2305 -0.2305)" d="M46 246V262Q46 340 77.0 395.5Q108 451 159.5 480.5Q211 510 272 510Q340 510 375.0 486.0Q410 462 426 436H444V496H568V-88Q568 -139 538.0 -169.5Q508 -200 458 -200H126V-90H414Q442 -90 442 -60V69H424Q414 53 396.0 36.5Q378 20 348.0 9.0Q318 -2 272 -2Q211 -2 159.5 27.5Q108 57 77.0 112.5Q46 168 46 246ZM308 108Q366 108 405.0 145.0Q444 182 444 249V259Q444 327 405.5 363.5Q367 400 308 400Q250 400 211.0 363.5Q172 327 172 259V249Q172 182 211.0 145.0Q250 108 308 108Z"/><g transform="translate(-21.0 0)"><path d="M-30.9 282.5C-30.9 208.5 30.9 208.5 30.9 282.5" fill="none" stroke="#c6ff3d" stroke-width="20.3"/><path fill="#c6ff3d" fill-rule="evenodd" d="M-18.8 274.5H18.8Q67.1 274.5 67.1 322.8V346.9Q67.1 395.2 18.8 395.2H-18.8Q-67.1 395.2 -67.1 346.9V322.8Q-67.1 274.5 -18.8 274.5ZM-14.4 299.2H14.4Q39.5 299.2 39.5 324.2V345.5Q39.5 370.5 14.4 370.5H-14.4Q-39.5 370.5 -39.5 345.5V324.2Q-39.5 299.2 -14.4 299.2Z"/></g><path fill="#fff" transform="translate(52.9 392) scale(0.2305 -0.2305)" d="M110 0 40 496H165L209 85H227L291 496H493L557 85H575L619 496H744L674 0H465L401 411H383L319 0Z"/></svg>';
+var MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],EAT=10800000,DAY=86400000;
+var STATUS={new:'New',quoted:'Quoted',paid:'Paid',done:'Activated',rejected:'Rejected'};
+var BC={new:'#ffb020',quoted:'#5aa9ff',paid:'#3ddc84',done:'#c6ff3d',rejected:'#ff6b6b'};
+var PROD=[['tg','Telegram Premium'],['sn','Snap Plus'],['me','Meta Ads'],['tk','TikTok Ads'],['ta','Telegram Ads'],['wp','Web Payment']];
+var DEF={tg:{mode:'priced',plans:[['3 months',3000],['6 months',null],['12 months',null]]},sn:{mode:'priced',plans:[['3 months',2700],['6 months',null],['12 months',null]]},me:{mode:'contact',plans:[]},tk:{mode:'contact',plans:[]},ta:{mode:'contact',plans:[]},wp:{mode:'priced',plans:[['Starter',1000],['Growth',2500],['Pro',5000],['Scale',10000]]}};
+var TABS=[['overview','Overview','M3 12l9-9 9 9M5 10v10h14V10'],['orders','Orders','M4 6h16M4 12h16M4 18h10'],['customers','Customers','M16 11a4 4 0 1 0-8 0M4 21a8 8 0 0 1 16 0'],['referrals','Referrals','M12 3v18M3 12h18'],['prices','Prices','M12 2v20M17 6H9.500a3.500 3.500 0 0 0 0 7h5a3.500 3.500 0 0 1 0 7H6'],['settings','Settings','M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM19 12a7 7 0 0 0-.1-1.300l2-1.500-2-3.400-2.300 1a7 7 0 0 0-2.200-1.300L14 3h-4l-.4 2.500A7 7 0 0 0 7.400 6.800l-2.300-1-2 3.400 2 1.500A7 7 0 0 0 5 12c0 .4 0 .9.100 1.300l-2 1.500 2 3.400 2.300-1a7 7 0 0 0 2.200 1.300L10 21h4l.4-2.500a7 7 0 0 0 2.200-1.300l2.300 1 2-3.400-2-1.500c.1-.4.100-.9.100-1.300z']];
+var S={pw:sessionStorage.getItem('gowpw')||'',ok:false,tab:'overview',orders:[],cfg:null,refs:[],stats:{},site:{telegram:'',banks:[]},q:'',flt:'all',range:'7',msg:{},det:null,rexp:{},loginErr:'',err:''};
+var app=document.getElementById('app');
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function money(n){return Number(n||0).toLocaleString('en-US')+' ETB'}
+function pad(n){return String(n).padStart(2,'0')}
+function fdt(ts){var d=new Date(ts+EAT);return d.getUTCDate()+' '+MON[d.getUTCMonth()]+' '+pad(d.getUTCHours())+':'+pad(d.getUTCMinutes())}
+function dayStart(){return Math.floor((Date.now()+EAT)/DAY)*DAY-EAT}
+function sum(a,f){return a.reduce(function(s,x){return s+(f(x)||0)},0)}
+function api(path,opt){opt=opt||{};opt.headers=Object.assign({'X-Admin':S.pw},opt.headers||{});return fetch(API+path,opt).then(function(r){if(r.status===401)throw new Error('auth');return r})}
+function jget(p){return api(p).then(function(r){if(!r.ok)throw new Error('http');return r.json()})}
+function badge(s){return '<span class="bd" style="background:'+(BC[s]||'#888')+'">'+esc(STATUS[s]||s)+'</span>'}
+function icon(d){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="'+d+'"/></svg>'}
+var isPaid=function(r){return r.status==='paid'||r.status==='done'};
+/* ---------- sign in / load ---------- */
+function loginView(){app.innerHTML='<div class="lg"><div class="card">'+LOGO+'<h1 style="font-size:24px">Admin sign in</h1><label class="lb" for="pw">Admin password</label><input id="pw" type="password" autocomplete="current-password" autofocus><div class="er" id="er">'+esc(S.loginErr)+'</div><button class="bt pri" id="go" style="width:100%">Sign in</button><p class="nt" style="margin-top:14px">This is the ADMIN_PASSWORD from your Cloudflare Worker.</p></div></div>'}
+async function signIn(pw){S.pw=pw;try{var r=await fetch(API+'/auth',{method:'POST',headers:{'X-Admin':pw}});if(!r.ok)throw 0;sessionStorage.setItem('gowpw',pw);S.ok=true;S.loginErr='';await load()}catch(e){S.ok=false;S.loginErr='Wrong password, or the server can’t be reached.';loginView()}}
+function logout(m){sessionStorage.removeItem('gowpw');S.pw='';S.ok=false;S.loginErr=m||'';loginView()}
+async function load(){app.innerHTML='<div class="lg"><p class="nt">Loading…</p></div>';
+ try{var r=await Promise.all([jget('/admin/orders'),fetch(API+'/prices').then(function(x){return x.ok?x.json():null}),jget('/refs'),jget('/refstats'),fetch(API+'/site').then(function(x){return x.ok?x.json():null})]);
+  S.orders=r[0]||[];var c=r[1]||{};S.cfg={};PROD.forEach(function(p){var k=p[0],x=c[k]||DEF[k];S.cfg[k]={mode:x.mode==='contact'?'contact':'priced',plans:(x.plans||[]).map(function(a){return[a[0],a[1]]})}});
+  S.refs=Object.keys(r[2]||{}).map(function(k){var x=r[2][k];return{code:k,pct:x.pct,owner:x.owner||'',on:x.on!==false}});S.stats=r[3]||{};var st=r[4]||{};
+  S.site={telegram:st.telegram||'',banks:(st.banks||[]).map(function(b){return{b:b.b||'',n:b.n||'',a:b.a||''}})};
+  if(!S.site.banks.length)S.site.banks=[{b:'CBE',n:'Michael Wondwossen',a:'10008787969'},{b:'Telebirr',n:'Michael Wondwossen',a:'0988160707'}];S.err=''}
+ catch(e){if(e.message==='auth'){logout('Session expired. Sign in again.');return}S.err='Could not load everything. Check your connection, then press Refresh.'}
+ render()}
+/* ---------- layout ---------- */
+function render(){if(!S.ok){loginView();return}
+ var open=S.orders.filter(function(r){return r.status==='new'||r.status==='quoted'}).length;
+ var nav=TABS.map(function(t){return '<button class="nv'+(S.tab===t[0]?' on':'')+'" data-tab="'+t[0]+'">'+icon(t[2])+t[1]+(t[0]==='orders'&&open?'<span class="ct">'+open+'</span>':'')+'</button>'}).join('');
+ app.innerHTML='<div class="shell"><aside class="side"><div class="lgo">'+LOGO+'<small>Admin</small></div>'+nav+'<div class="sp"></div><button class="nv" data-refresh>Refresh data</button><button class="nv" data-logout>Sign out</button></aside><main class="main">'+(S.err?'<div class="card" style="border-color:var(--bad)">'+esc(S.err)+'</div>':'')+VIEW[S.tab]()+'</main></div>'+(S.det?drawer():'')}
+function ptop(t,right){return '<div class="top"><h1>'+t+'</h1><div>'+(right||'')+'</div></div>'}
+function msg(k){var m=S.msg[k];return '<div class="msg '+(m?m.t:'')+'" id="m-'+k+'">'+(m?esc(m.m):'')+'</div>'}
+/* ---------- overview ---------- */
+function since(){var d=dayStart();return S.range==='today'?d:S.range==='7'?d-6*DAY:S.range==='30'?d-29*DAY:0}
+function rangeSeg(){return '<div class="seg">'+[['today','Today'],['7','7 days'],['30','30 days'],['all','All time']].map(function(x){return '<button data-rg="'+x[0]+'" class="'+(S.range===x[0]?'on':'')+'">'+x[1]+'</button>'}).join('')+'</div>'}
+function chart(){var W=700,H=170,n=14,base=dayStart(),b=[];for(var i=n-1;i>=0;i--){var s=base-i*DAY;b.push({s:s,v:sum(S.orders.filter(function(r){return isPaid(r)&&r.kind==='order'&&r.ts>=s&&r.ts<s+DAY}),function(r){return r.total})})}
+ var mx=Math.max.apply(0,b.map(function(x){return x.v}))||1,bw=W/n,h='<svg class="chart" viewBox="0 0 '+W+' '+(H+24)+'" width="100%" role="img" aria-label="Revenue, last 14 days">';
+ b.forEach(function(x,i){var bh=Math.max(x.v?4:0,(x.v/mx)*H),d=new Date(x.s+EAT);h+='<rect x="'+(i*bw+8)+'" y="'+(H-bh)+'" width="'+(bw-16)+'" height="'+bh+'" rx="6" fill="'+(i===n-1?'#c6ff3d':'#3a3f2a')+'"><title>'+d.getUTCDate()+' '+MON[d.getUTCMonth()]+': '+money(x.v)+'</title></rect><text x="'+(i*bw+bw/2)+'" y="'+(H+16)+'" text-anchor="middle">'+d.getUTCDate()+'</text>'});return h+'</svg>'}
+VIEW={};
+VIEW.overview=function(){var rows=S.orders.filter(function(r){return r.ts>=since()}),ord=rows.filter(function(r){return r.kind==='order'}),paid=ord.filter(isPaid),wait=ord.filter(function(r){return r.status==='new'}),q=rows.filter(function(r){return r.kind==='quote'}),qo=q.filter(function(r){return r.status==='new'});
+ var cust=new Set(rows.map(function(r){return(r.contact||r.name||'').toLowerCase()})).size,by={};paid.forEach(function(r){var k=(r.product||'').replace(/ \(.*\)$/,'');by[k]=by[k]||{n:0,t:0};by[k].n++;by[k].t+=r.total});
+ var pr=Object.keys(by).sort(function(a,b){return by[b].t-by[a].t}).map(function(k){return '<tr><td>'+esc(k)+'</td><td class="r">'+by[k].n+'</td><td class="r">'+money(by[k].t)+'</td></tr>'}).join('')||'<tr><td colspan="3" class="empty">No paid orders in this period.</td></tr>';
+ var need=S.orders.filter(function(r){return r.status==='new'||r.status==='quoted'}).slice(-8).reverse().map(function(r){return '<tr class="rw" data-open="'+esc(r.id)+'"><td><b>'+esc(r.id)+'</b><br><span class="nt">'+fdt(r.ts)+'</span></td><td>'+esc(r.product)+'<br><span class="nt">'+esc(r.name)+' '+esc(r.contact)+'</span></td><td class="r">'+(r.total?money(r.total):'quote')+'</td><td>'+badge(r.status)+'</td></tr>'}).join('')||'<tr><td colspan="4" class="empty">Nothing is waiting. All handled.</td></tr>';
+ return ptop('Overview',rangeSeg())+'<div class="kpis"><div class="kpi hl"><span>Revenue</span><b>'+money(sum(paid,function(r){return r.total}))+'</b><i>'+paid.length+' paid or activated</i></div><div class="kpi"><span>Orders</span><b>'+ord.length+'</b><i>'+ord.filter(function(r){return r.status==='rejected'}).length+' rejected</i></div><div class="kpi"><span>Waiting for payment check</span><b>'+wait.length+'</b><i>'+money(sum(wait,function(r){return r.total}))+'</i></div><div class="kpi"><span>Quote requests</span><b>'+q.length+'</b><i>'+qo.length+' not answered</i></div><div class="kpi"><span>Customers</span><b>'+cust+'</b><i>different people</i></div><div class="kpi"><span>Discounts given</span><b>'+money(sum(paid,function(r){return r.disc}))+'</b><i>referral codes</i></div></div>'
+ +'<div class="grid2"><div class="card"><h2>Revenue, last 14 days</h2>'+chart()+'</div><div class="card"><h2>By product</h2><div class="tw"><table><tr><th>Product</th><th class="r">Orders</th><th class="r">Revenue</th></tr>'+pr+'</table></div></div></div>'
+ +'<div class="card"><h2>Needs your attention</h2><div class="tw"><table><tr><th>Order</th><th>Customer</th><th class="r">Amount</th><th>Status</th></tr>'+need+'</table></div></div>'};
+/* ---------- orders ---------- */
+function filtered(){var q=S.q.toLowerCase();return S.orders.slice().reverse().filter(function(r){return(S.flt==='all'||r.status===S.flt)&&(!q||[r.id,r.name,r.contact,r.product,r.ref].join(' ').toLowerCase().indexOf(q)>-1)})}
+function otable(){var rows=filtered();return rows.length?'<table><tr><th>Order</th><th>Customer</th><th>Product</th><th class="r">Amount</th><th>Status</th><th>Code</th></tr>'+rows.slice(0,300).map(function(r){return '<tr class="rw" data-open="'+esc(r.id)+'"><td><b>'+esc(r.id)+'</b><br><span class="nt">'+fdt(r.ts)+'</span></td><td>'+esc(r.name)+'<br><span class="nt">'+esc(r.contact)+'</span></td><td>'+esc(r.product)+'</td><td class="r">'+(r.total?money(r.total):'quote')+'</td><td>'+badge(r.status)+'</td><td>'+esc(r.ref||'')+'</td></tr>'}).join('')+'</table>'+(rows.length>300?'<p class="nt" style="padding:10px">Showing the newest 300 of '+rows.length+'. Use search to narrow down.</p>':''):'<div class="empty">No orders match.</div>'}
+VIEW.orders=function(){var fl=[['all','All']].concat(Object.keys(STATUS).map(function(k){return[k,STATUS[k]]}));
+ return ptop('Orders','<button class="bt" data-csv>Export CSV</button>')+'<div class="tl"><input type="search" id="oq" placeholder="Search order, name, contact, product or code" value="'+esc(S.q)+'"><div class="seg">'+fl.map(function(x){return '<button data-fl="'+x[0]+'" class="'+(S.flt===x[0]?'on':'')+'">'+x[1]+'</button>'}).join('')+'</div></div><div class="card" style="padding:6px"><div class="tw" id="otb">'+otable()+'</div></div>'};
+function drawer(){var d=S.det,r=d.rec;if(!r)return '<div class="ov" data-x><div class="dw"><p class="nt">Loading…</p></div></div>';
+ return '<div class="ov" data-x><div class="dw"><div class="top" style="margin-bottom:8px"><h1 style="font-size:22px">'+esc(r.id)+'</h1><button class="bt sm" data-close>Close</button></div>'+badge(r.status)
+ +[['Type',r.kind==='quote'?'Quote request':'Order'],['Product',r.product],['Amount',r.total?money(r.total):'To be quoted'],['Referral',r.ref?r.ref.code+' ('+r.ref.pct+'%'+(r.ref.disc?', -'+money(r.ref.disc):'')+')':'None'],['Details',r.details],['Name',r.name],['Contact',r.contact],['Paid via',r.paid||'-'],['Received',fdt(r.ts)]].map(function(x){return '<div class="kv"><span>'+x[0]+'</span><b>'+esc(x[1])+'</b></div>'}).join('')
+ +(d.shot?'<img class="shot" src="'+d.shot+'" alt="Payment screenshot">':'<p class="nt" style="margin-top:14px">'+(d.shotDone?'No screenshot saved for this order.':'Loading screenshot…')+'</p>')
+ +'<div class="acts">'+Object.keys(STATUS).filter(function(k){return k!==r.status}).map(function(k){return '<button class="bt sm'+(k==='rejected'?' dg':'')+'" data-stt="'+esc(r.id)+':'+k+'">Mark '+STATUS[k].toLowerCase()+'</button>'}).join('')+'</div>'+msg('det')+'</div></div>'}
+async function openOrder(id){S.det={rec:null,shot:null,shotDone:false};render();try{var r=await jget('/admin/order?id='+encodeURIComponent(id));S.det.rec=r;render();
+ if(r.shot){var b=await api('/admin/shot?id='+encodeURIComponent(id)).then(function(x){return x.blob()});S.det.shot=await new Promise(function(ok){var f=new FileReader();f.onload=function(){ok(f.result)};f.readAsDataURL(b)})}S.det.shotDone=true;if(S.det&&S.det.rec&&S.det.rec.id===id)render()}catch(e){S.det=null;render()}}
+/* ---------- customers ---------- */
+VIEW.customers=function(){var m={};S.orders.forEach(function(r){var k=(r.contact||r.name||'').toLowerCase(),c=m[k]=m[k]||{name:r.name,contact:r.contact,n:0,p:0,t:0,last:0,codes:{}};c.n++;if(isPaid(r)){c.p++;c.t+=r.total}if(r.ts>c.last){c.last=r.ts;c.name=r.name}if(r.ref)c.codes[r.ref]=1});
+ var list=Object.keys(m).map(function(k){return m[k]}).sort(function(a,b){return b.t-a.t||b.n-a.n}),q=S.q.toLowerCase();if(q)list=list.filter(function(c){return(c.name+' '+c.contact).toLowerCase().indexOf(q)>-1});
+ return ptop('Customers','<span class="nt">'+list.length+' people</span>')+'<div class="tl"><input type="search" id="cq" placeholder="Search name or contact" value="'+esc(S.q)+'"></div><div class="card" style="padding:6px"><div class="tw">'+(list.length?'<table><tr><th>Customer</th><th class="r">Orders</th><th class="r">Paid</th><th class="r">Total spent</th><th>Last order</th><th>Codes used</th></tr>'+list.slice(0,300).map(function(c){return '<tr class="rw" data-cust="'+esc(c.contact||c.name)+'"><td><b>'+esc(c.name)+'</b><br><span class="nt">'+esc(c.contact)+'</span></td><td class="r">'+c.n+'</td><td class="r">'+c.p+'</td><td class="r">'+money(c.t)+'</td><td>'+fdt(c.last)+'</td><td>'+esc(Object.keys(c.codes).join(', '))+'</td></tr>'}).join('')+'</table>':'<div class="empty">No customers yet.</div>')+'</div></div><p class="nt">Click a customer to see their orders.</p>'};
+/* ---------- referrals ---------- */
+function rstat(r){var s=S.stats[String(r.code).toUpperCase()];return s?s:null}
+VIEW.referrals=function(){var all=Object.keys(S.stats).map(function(k){return S.stats[k]}),u=sum(all,function(s){return s.uses}),p=sum(all,function(s){return s.paid}),d=sum(all,function(s){return s.discount}),rv=sum(all,function(s){return s.revenue});
+ var rows=S.refs.map(function(r,i){var s=rstat(r),open=S.rexp[r.code];return '<div class="row rf"><input data-rr="'+i+':code" value="'+esc(r.code)+'" placeholder="CODE"><input data-rr="'+i+':pct" type="number" min="0" max="90" value="'+esc(r.pct)+'" placeholder="% off"><input data-rr="'+i+':owner" value="'+esc(r.owner)+'" placeholder="Owner name"><label style="display:flex;gap:6px;align-items:center"><input type="checkbox" data-rr="'+i+':on" style="width:auto"'+(r.on?' checked':'')+'>On</label><button class="x" data-del="ref:'+i+'" aria-label="Remove">×</button></div>'
+  +'<p class="nt" style="margin:-2px 0 14px 2px">'+(s?'<b style="color:var(--tx)">'+s.uses+'</b> orders from <b style="color:var(--tx)">'+s.unique+'</b> people · '+s.paid+' paid · '+money(s.revenue)+' · discount given '+money(s.discount)+' · <a href="#" data-rexp="'+esc(r.code)+'" style="color:var(--acc)">'+(open?'Hide people':'Show people')+'</a>':'No orders with this code yet.')+'</p>'
+  +(s&&open?'<div class="card" style="padding:10px 14px;margin:-6px 0 14px">'+s.orders.map(function(o){return '<div class="kv"><span>'+esc(o.name)+' '+esc(o.contact)+'</span><b>'+esc(o.product)+' · '+esc(o.status)+' · '+fdt(o.ts)+'</b></div>'}).join('')+'</div>':'')}).join('');
+ return ptop('Referrals')+'<div class="kpis"><div class="kpi"><span>Orders with a code</span><b>'+u+'</b><i>'+p+' paid</i></div><div class="kpi"><span>Revenue from referrals</span><b>'+money(rv)+'</b><i>paid or activated</i></div><div class="kpi"><span>Discounts given</span><b>'+money(d)+'</b><i>total</i></div><div class="kpi"><span>Active codes</span><b>'+S.refs.filter(function(r){return r.on}).length+'</b><i>of '+S.refs.length+'</i></div></div>'
+ +'<div class="card"><h2>Codes</h2><p class="nt" style="margin-bottom:14px">You decide each code. A customer who enters it gets that % off. Set the % to <b>0</b> to only count the people who used the code, with no discount. Use 5 or more letters or numbers.</p>'+(rows||'<p class="empty">No codes yet.</p>')+'<div class="acts"><button class="bt" data-add="ref">Add code</button><button class="bt pri" data-save="referrals">Save codes</button></div>'+msg('referrals')+'</div>'};
+/* ---------- prices ---------- */
+VIEW.prices=function(){return ptop('Prices and packages')+'<p class="nt" style="margin-bottom:16px">Leave a price empty to show “Ask for price”: the customer then sends a quote request instead of paying. Changes go live as soon as you save.</p><div class="pgrid">'+PROD.map(function(p){var k=p[0],c=S.cfg[k],ads=['me','tk','ta'].indexOf(k)>-1;
+ return '<div class="card"><h2>'+p[1]+'</h2>'+(ads?'<label class="lb">Pricing</label><select data-md="'+k+'"><option value="contact"'+(c.mode==='contact'?' selected':'')+'>By contact (no public price)</option><option value="priced"'+(c.mode!=='contact'?' selected':'')+'>Fixed packages</option></select>':'')
+ +(c.mode!=='contact'?'<label class="lb">Packages</label>'+c.plans.map(function(r,i){return '<div class="row pk"><input data-pl="'+k+':'+i+':0" value="'+esc(r[0])+'" placeholder="Package name"><input data-pl="'+k+':'+i+':1" type="number" min="0" value="'+(r[1]||'')+'" placeholder="Price (ETB)"><button class="x" data-del="plan:'+k+':'+i+'" aria-label="Remove">×</button></div>'}).join('')+'<button class="bt sm" data-add="plan:'+k+'">Add package</button>':'<p class="nt">Customers send a quote request and you reply with the price.</p>')+'</div>'}).join('')+'</div><div class="acts" style="margin-top:6px"><button class="bt pri" data-save="prices">Save prices</button></div>'+msg('prices')};
+/* ---------- settings ---------- */
+VIEW.settings=function(){return ptop('Settings')+'<div class="card"><h2>Store contact</h2><label class="lb">Telegram username (customers who tap “Chat on Telegram”)</label><input data-site="telegram" value="'+esc(S.site.telegram)+'" placeholder="yourusername, without @"></div>'
+ +'<div class="card"><h2>Bank accounts shown at payment</h2><p class="nt" style="margin-bottom:12px">Customers see these when they pay. Order the list the way you want it shown.</p>'+S.site.banks.map(function(b,i){return '<div class="row bk"><input data-bk="'+i+':b" value="'+esc(b.b)+'" placeholder="Bank (CBE)"><input data-bk="'+i+':n" value="'+esc(b.n)+'" placeholder="Account holder"><input data-bk="'+i+':a" value="'+esc(b.a)+'" placeholder="Account number"><button class="x" data-del="bank:'+i+'" aria-label="Remove">×</button></div>'}).join('')+'<div class="acts"><button class="bt" data-add="bank">Add account</button></div></div>'
+ +'<div class="acts"><button class="bt pri" data-save="settings">Save settings</button></div>'+msg('settings')
+ +'<div class="card" style="margin-top:20px"><h2>Good to know</h2><p class="nt">Your admin password, bot token and email key are stored in Cloudflare (Worker → Settings → Variables and Secrets). They are never saved on this page.<br>To check the bot, open: <b>'+esc(API)+'/status?key=YOUR_TG_SECRET</b><br>Payment screenshots are kept for 6 months.</p></div>'};
+/* ---------- actions ---------- */
+function flash(k,t,m){S.msg[k]={t:t,m:m};var e=document.getElementById('m-'+k);if(e){e.className='msg '+t;e.textContent=m}}
+async function save(k){try{
+ if(k==='prices'){var o={};PROD.forEach(function(p){var c=S.cfg[p[0]];o[p[0]]={mode:c.mode,plans:c.plans.filter(function(r){return String(r[0]).trim()}).map(function(r){return[String(r[0]).trim(),Number(r[1])||null]})}});await api('/prices',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(o)}).then(chk)}
+ if(k==='referrals'){var ro={};S.refs.forEach(function(r){var c=String(r.code).trim().toUpperCase().replace(/[^A-Z0-9_-]/g,'');if(c)ro[c]={pct:Math.min(90,Math.max(0,r.pct===''||isNaN(Number(r.pct))?5:Number(r.pct))),owner:String(r.owner||'').trim(),on:r.on!==false}});await api('/refs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(ro)}).then(chk);S.stats=await jget('/refstats').catch(function(){return S.stats})}
+ if(k==='settings'){await api('/site',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({telegram:String(S.site.telegram||'').trim().replace(/^@/,''),banks:S.site.banks.filter(function(b){return String(b.a).trim()}).map(function(b){return{b:String(b.b).trim(),n:String(b.n).trim(),a:String(b.a).trim()}})})}).then(chk)}
+ S.msg[k]={t:'ok',m:'Saved. It is live on your site now.'};render()}catch(e){if(e.message==='auth'){logout('Session expired.');return}flash(k,'err','Could not save. Check the connection and that the PRICES storage is connected to the Worker.')}}
+function chk(r){if(!r.ok)throw new Error('http')}
+async function setStatus(id,st){try{var r=await api('/admin/status',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:id,status:st})}).then(function(x){if(!x.ok)throw 0;return x.json()});var i=S.orders.findIndex(function(o){return o.id===id});if(i>-1)S.orders[i].status=st;if(S.det&&S.det.rec)S.det.rec.status=st;render()}catch(e){flash('det','err','Could not change the status.')}}
+function csv(){var q=function(v){return '"'+String(v==null?'':v).replace(/"/g,'""')+'"'},rows=filtered();var t='id,received,type,product,total_etb,status,name,contact,referral_code,discount_etb\n'+rows.map(function(r){return[r.id,fdt(r.ts),r.kind,r.product,r.total,STATUS[r.status]||r.status,r.name,r.contact,r.ref||'',r.disc||0].map(q).join(',')}).join('\n');var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([t],{type:'text/csv'}));a.download='gow-orders.csv';document.body.appendChild(a);a.click();a.remove()}
+document.addEventListener('click',function(e){var t=e.target,b;if(!S.ok){if(t.id==='go')signIn(document.getElementById('pw').value);return}
+ if(b=t.closest('[data-tab]')){S.tab=b.dataset.tab;S.q='';render();window.scrollTo(0,0);return}
+ if(b=t.closest('[data-rg]')){S.range=b.dataset.rg;render();return}
+ if(b=t.closest('[data-fl]')){S.flt=b.dataset.fl;render();return}
+ if(t.closest('[data-refresh]')){load();return}if(t.closest('[data-logout]')){logout();return}
+ if(t.closest('[data-csv]')){csv();return}
+ if(t.closest('[data-close]')||(t.classList&&t.classList.contains('ov'))){S.det=null;render();return}
+ if(b=t.closest('[data-stt]')){var p=b.dataset.stt.split(':');setStatus(p[0],p[1]);return}
+ if(b=t.closest('[data-open]')){openOrder(b.dataset.open);return}
+ if(b=t.closest('[data-cust]')){S.tab='orders';S.q=b.dataset.cust;S.flt='all';render();return}
+ if(b=t.closest('[data-rexp]')){e.preventDefault();S.rexp[b.dataset.rexp]=!S.rexp[b.dataset.rexp];render();return}
+ if(b=t.closest('[data-add]')){var a=b.dataset.add.split(':');if(a[0]==='plan')S.cfg[a[1]].plans.push(['',null]);if(a[0]==='ref')S.refs.push({code:'',pct:5,owner:'',on:true});if(a[0]==='bank')S.site.banks.push({b:'',n:'',a:''});render();return}
+ if(b=t.closest('[data-del]')){var d=b.dataset.del.split(':');if(d[0]==='plan')S.cfg[d[1]].plans.splice(+d[2],1);if(d[0]==='ref')S.refs.splice(+d[1],1);if(d[0]==='bank')S.site.banks.splice(+d[1],1);render();return}
+ if(b=t.closest('[data-save]')){save(b.dataset.save);return}});
+document.addEventListener('input',function(e){var t=e.target,k;
+ if(t.id==='oq'){S.q=t.value;document.getElementById('otb').innerHTML=otable();return}
+ if(t.id==='cq'){S.q=t.value;var p=t.selectionStart;render();var n=document.getElementById('cq');n.focus();n.setSelectionRange(p,p);return}
+ if(k=t.dataset.pl){var q=k.split(':');S.cfg[q[0]].plans[+q[1]][+q[2]]=t.value;return}
+ if(k=t.dataset.rr){var r=k.split(':'),o=S.refs[+r[0]];if(r[1]==='on')o.on=t.checked;else o[r[1]]=t.value;return}
+ if(k=t.dataset.bk){var z=k.split(':');S.site.banks[+z[0]][z[1]]=t.value;return}
+ if(t.dataset.site){S.site[t.dataset.site]=t.value}});
+document.addEventListener('change',function(e){var k=e.target.dataset.md;if(k){S.cfg[k].mode=e.target.value;render()}});
+document.addEventListener('keydown',function(e){if(e.key==='Enter'&&!S.ok&&e.target.id==='pw')signIn(e.target.value);if(e.key==='Escape'&&S.det){S.det=null;render()}});
+if(S.pw){signIn(S.pw)}else loginView();
+</script></body></html>
