@@ -1,0 +1,41 @@
+TELEGRAM BOT SETUP (about 10 minutes)
+
+1. Telegram > @BotFather > /newbot > pick a name > copy the token. (Already have a bot? Use it.)
+2. Open your new bot in Telegram and press Start.
+3. Message @userinfobot to get your own numeric Id.
+4. Cloudflare > your Worker > Edit code: select all, delete, paste the new worker.js, Deploy.
+5. Worker > Settings > Variables and Secrets. Add (type in brackets):
+     BOT_TOKEN  (Secret)  the token from step 1
+     CHAT_ID    (Text)    your Id from step 3
+     TG_SECRET  (Secret)  any random text, 20+ letters and numbers, e.g. gow7Hq2xV9pLm4Zt8RkWs3Dn
+     ADMIN_PASSWORD (Secret), ORIGIN (Text, all your site addresses separated by commas), RESEND_API_KEY (Secret), OWNER_EMAIL (Text)
+   Check the Bindings tab: a KV namespace named PRICES must be connected. Deploy again.
+6. Open this address once in your browser (replace the parts in capitals):
+     https://YOUR-WORKER-ADDRESS/setup?key=YOUR_TG_SECRET
+   It should say "webhook: OK" and "commands: OK".
+7. In Telegram send /start to your bot. Place a test order on the site: a card with the screenshot and buttons arrives.
+
+COMMANDS (only your own chat can use them)
+  /new  /orders  /today  /week  /month  /all  /order ID  /find word  /customers  /export
+
+Orders are saved from the moment this Worker is live. Older test orders are not in the log.
+
+REFERRAL DISCOUNT
+  A customer types a referral code in the order form and gets that % off. The code is checked by your Worker, so it needs the Worker address in the site settings.
+  Make codes in either place:
+    - Admin page (your site address + #admin) > Referral codes > Add code (code, % off, owner name, On) > Save prices and codes
+    - Telegram bot:  /ref add ABEL5 5 Abel      /ref off ABEL5      /ref on ABEL5      /ref del ABEL5
+  See what each code brought:  /refs   (orders, paid orders, revenue, discount given)  - use it to reward the person who referred.
+  Every order card shows the code. If a code or discount does not match what is saved, the card says CHECK.
+
+PACKAGES WITH "ASK FOR PRICE"
+  They now work as a quote request: the customer sends their details, you reply with the price on Telegram, and they pay after that. No payment screen and no screenshot are asked for.
+
+REFERRAL: YOU CONTROL EVERYTHING FROM THE ADMIN PAGE (your site address + #admin > Referral codes)
+  Each code has its own discount %. Set it to 0 and the code gives NO discount: it only counts the people who used it.
+  Under every code you see: orders, number of different people, paid orders, revenue and the discount given. "Show people" lists who used it.
+  Turn a code Off with the On box, or remove it, then press "Save prices and codes".
+  In the bot:  /refs  (all codes)   /refs ABEL5  (the people who used one code)   /ref add CODE PERCENT Owner   (0 = no discount)
+
+SETUP LINK (exact format, no spaces, one https, a slash before setup):
+  https://YOUR-WORKER-ADDRESS/setup?key=YOUR_TG_SECRET
